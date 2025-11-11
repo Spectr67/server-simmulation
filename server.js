@@ -1,6 +1,6 @@
 const accounts = []
 const sessions = {}
-const randId = () => crypto.randomUUID().split('-')[0]
+const randId = x => crypto.randomUUID().split('-')[0]
 
 function createAccount(regData) {
   delete regData.re
@@ -13,7 +13,7 @@ function createSession(username) {
   return sessionId
 }
 function getAccountByUsername(username) {
-  return accounts.find((a) => a.username === username)
+  return accounts.find(a => a.username === username)
 }
 function getUsernameBySessionId(sessionId) {
   return sessions[sessionId]
