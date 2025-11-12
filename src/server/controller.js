@@ -40,10 +40,17 @@ function authorize(sessionId) {
     const username = getUsernameBySessionId(sessionId)
     if (username) {
       const account = getAccountByUsername(username)
-      return Object.fromEntries(accounts.map((a) => [a.username, a.drink]))
+      return Object.fromEntries(accounts.map(a => [a.username, a.drink]))
     }
     return false
   }
 }
 
-export { accounts, sessions, setRoleToAccount, register, authenticate, authorize }
+export {
+  accounts,
+  sessions,
+  setRoleToAccount,
+  register,
+  authenticate,
+  authorize,
+}
