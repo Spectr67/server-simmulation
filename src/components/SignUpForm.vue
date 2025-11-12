@@ -56,7 +56,7 @@ export default {
         favoriteDrink: this.form.favoriteDrink,
       }
 
-      console.log('Registration data:', accountDto)
+      // console.log('Registration data:', accountDto)
 
       this.$emit('submitForm', accountDto)
 

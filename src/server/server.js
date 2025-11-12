@@ -1,6 +1,18 @@
-const accounts = []
-const sessions = {}
-const randId = x => crypto.randomUUID().split('-')[0]
+import {
+  getAccounts,
+  setAccounts,
+  getSessions,
+  setSessions,
+} from '@/localStorage/localStorage'
+
+const randId = () => crypto.randomUUID().split('-')[0]
+
+/**
+ * server
+ */
+// private: (клиент не вызывает эти функции)
+const accounts = getAccounts()
+const sessions = getSessions()
 
 function createAccount(regData) {
   delete regData.re
@@ -10,6 +22,7 @@ function createAccount(regData) {
 function createSession(username) {
   const sessionId = randId()
   sessions[sessionId] = username
+  setSessions(sessions)
   return sessionId
 }
 function getAccountByUsername(username) {
@@ -23,14 +36,92 @@ function checkAuthData(authData) {
   if (account) return account.password === authData.password
   else return false
 }
-//////////
 
-export {
-  accounts,
-  sessions,
-  createAccount,
-  createSession,
-  getAccountByUsername,
-  getUsernameBySessionId,
-  checkAuthData,
+// public: (функции для клиента. пользуйтесь наздоровье)
+function setRoleToAccount(username, role) {
+  getAccountByUsername(username).role = role
+}
+function register(regData) {
+  if (regData.username === '') return false
+  if (regData.password === '') return false
+  if (regData.password !== regData.re) return false
+  if (getAccountByUsername(regData.username)) return false
+  const account = createAccount(regData)
+  accounts.push(account)
+  setAccounts(accounts)
+  return true
+}
+function authenticate(authData) {
+  const isOk = checkAuthData(authData)
+  if (isOk) return createSession(authData.username)
+  return false
+}
+function authorize(sessionId) {
+  const resource = arguments.callee.caller.name
+  if (resource === 'showHome') return true
+  if (resource === 'showPanel') {
+    const username = getUsernameBySessionId(sessionId)
+    if (username) {
+      const account = getAccountByUsername(username)
+      return account.drink
+    }
+    return false
+  }
+  if (resource === 'showManage') {
+    const username = getUsernameBySessionId(sessionId)
+    if (username) {
+      const account = getAccountByUsername(username)
+      return Object.fromEntries(accounts.map(a => [a.username, a.drink]))
+    }
+    return false
+  }
+}
+
+//====================================================
+
+/**
+ * client
+ */
+// оптравляет запрос на сервер
+let sessionId
+function signUp(regData) {
+  const isSuccess = register(regData)
+  if (isSuccess) console.log('регистрация удалась')
+  else console.log('фейл регистрации')
+}
+function signIn(authData) {
+  sessionId = authenticate(authData)
+  if (sessionId) console.log('вход успешен:', authData.username)
+  else console.log('фейл входа')
+}
+
+//
+
+// всем, в том числе гостям (без регистрации)
+function showHome() {
+  const data = authorize(sessionId)
+  if (data) {
+    return 'Приветствуем в приложении "Напитки"'
+  } else {
+    return 'ERR! авторизация провалена (нехватает прав)'
+  }
+}
+// всем зарегеным юзерам
+function showPanel() {
+  const data = authorize(sessionId)
+  if (data) {
+    return `Ваш напиток: ${data}`
+  } else {
+    return 'ERR! авторизация провалена (нехватает прав)'
+  }
+}
+// только модераторам
+function showManage() {
+  const data = authorize(sessionId)
+  if (data) {
+    return data
+    return `Управление напитками пользователей ${data}`
+  } else {
+    return 'ERR! авторизация провалена (нехватает прав)'
+  }
 }
