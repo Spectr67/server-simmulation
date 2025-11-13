@@ -11,8 +11,6 @@ const randId = () => crypto.randomUUID().split('-')[0]
  * server
  */
 // private: (клиент не вызывает эти функции)
-const accounts = getAccounts()
-const sessions = getSessions()
 
 function createAccount(regData) {
   delete regData.re
@@ -20,12 +18,14 @@ function createAccount(regData) {
   return { id, ...regData, role: 'user' }
 }
 function createSession(username) {
+  const sessions = getSessions()
   const sessionId = randId()
   sessions[sessionId] = username
   setSessions(sessions)
   return sessionId
 }
 function getAccountByUsername(username) {
+  const accounts = getAccounts()
   return accounts.find(a => a.username === username)
 }
 function getUsernameBySessionId(sessionId) {
@@ -41,12 +41,18 @@ function checkAuthData(authData) {
 function setRoleToAccount(username, role) {
   getAccountByUsername(username).role = role
 }
-function register(regData) {
-  if (regData.username === '') return false
-  if (regData.password === '') return false
-  if (regData.password !== regData.re) return false
-  if (getAccountByUsername(regData.username)) return false
-  const account = createAccount(regData)
+export function register(regData) {
+  const accounts = getAccounts()
+
+  const username = regData.username || regData.login
+  const password = regData.password
+  const re = regData.re || regData.repassword
+  const drink = regData.drink || regData.favoriteDrink
+
+  if (!username || !password || password !== re) return false
+  if (getAccountByUsername(username)) return false
+
+  const account = createAccount({ username, password, drink })
   accounts.push(account)
   setAccounts(accounts)
   return true
@@ -84,11 +90,12 @@ function authorize(sessionId) {
  */
 // оптравляет запрос на сервер
 let sessionId
-function signUp(regData) {
-  const isSuccess = register(regData)
-  if (isSuccess) console.log('регистрация удалась')
-  else console.log('фейл регистрации')
-}
+// export function signUp(regData) {
+//   const isSuccess = register(regData)
+//   if (isSuccess) console.log('✅ регистрация удалась')
+//   else console.log('❌ фейл регистрации')
+//   return isSuccess
+// }
 function signIn(authData) {
   sessionId = authenticate(authData)
   if (sessionId) console.log('вход успешен:', authData.username)
