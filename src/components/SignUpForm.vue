@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       form: {
-        login: '',
+        username: '',
         password: '',
         repassword: '',
         favoriteDrink: '',
@@ -42,7 +42,7 @@ export default {
       this.submitted = false
 
       if (
-        !this.form.login ||
+        !this.form.username ||
         !this.form.password ||
         !this.form.repassword ||
         !this.form.favoriteDrink
@@ -50,7 +50,7 @@ export default {
         return
       }
       const accountDto = {
-        login: this.form.login,
+        username: this.form.username,
         password: this.form.password,
         repassword: this.form.repassword,
         favoriteDrink: this.form.favoriteDrink,
@@ -62,10 +62,12 @@ export default {
 
       this.submitted = true
 
-      this.form.login = ''
-      this.form.password = ''
-      this.form.repassword = ''
-      this.form.favoriteDrink = ''
+      setTimeout(() => {
+        this.form.username = ''
+        this.form.password = ''
+        this.form.repassword = ''
+        this.form.favoriteDrink = ''
+      }, 30)
     },
   },
 }
@@ -80,8 +82,8 @@ export default {
         <BFormGroup label="Login" label-for="login">
           <BFormInput
             id="login"
-            v-model.trim="form.login"
-            :state="fieldState('login')"
+            v-model.trim="form.username"
+            :state="fieldState('username')"
             placeholder=""
             required
           />

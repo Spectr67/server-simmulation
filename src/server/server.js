@@ -44,7 +44,7 @@ function setRoleToAccount(username, role) {
 export function register(regData) {
   const accounts = getAccounts()
 
-  const username = regData.username || regData.login
+  const username = regData.username || regData.username
   const password = regData.password
   const re = regData.re || regData.repassword
   const drink = regData.drink || regData.favoriteDrink
@@ -57,12 +57,12 @@ export function register(regData) {
   setAccounts(accounts)
   return true
 }
-function authenticate(authData) {
+export function authenticate(authData) {
   const isOk = checkAuthData(authData)
   if (isOk) return createSession(authData.username)
   return false
 }
-function authorize(sessionId) {
+export function authorize(sessionId) {
   const resource = arguments.callee.caller.name
   if (resource === 'showHome') return true
   if (resource === 'showPanel') {
@@ -96,11 +96,11 @@ let sessionId
 //   else console.log('❌ фейл регистрации')
 //   return isSuccess
 // }
-function signIn(authData) {
-  sessionId = authenticate(authData)
-  if (sessionId) console.log('вход успешен:', authData.username)
-  else console.log('фейл входа')
-}
+// function signIn(authData) {
+//   sessionId = authenticate(authData)
+//   if (sessionId) console.log('вход успешен:', authData.username)
+//   else console.log('фейл входа')
+// }
 
 //
 
