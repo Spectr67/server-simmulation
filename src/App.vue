@@ -9,7 +9,10 @@ export default {
   data() {
     return {
       accounts: getAccounts(),
-      success: false,
+      successReg: false,
+      errorReg: false,
+      successLog: false,
+      errorLog: false,
       sessionId: '',
     }
   },
@@ -17,19 +20,27 @@ export default {
     handleRegister(accountDto) {
       const success = register(accountDto)
       if (success) {
-        console.log('Аккаунт успешно зарегистрирован!')
         this.accounts = getAccounts()
-        this.success = true
+        this.successReg = true
+        this.errorReg = false
       } else {
-        console.log(' Ошибка регистрации (возможно логин уже занят)')
-        this.success = false
+        this.successReg = false
+        this.errorReg = true
       }
     },
+
     handleLogin(authData) {
       this.sessionId = authenticate(authData)
-      if (this.sessionId) console.log('вход успешен:', authData.username)
-      else console.log('фейл входа')
-      authorize(this.sessionId)
+
+      if (this.sessionId) {
+        this.successLog = true
+        this.errorLog = false
+      } else {
+        this.successLog = false
+        this.errorLog = true
+      }
+
+      // authorize(this.sessionId)
     },
   },
 }
@@ -41,15 +52,21 @@ export default {
     <div class="row g-4">
       <div class="col-md-6">
         <SignUpForm @submitForm="handleRegister" />
-        <BAlert v-if="success" show variant="success" class="mt-3">
+        <BAlert v-if="successReg" show variant="success" class="mt-3">
           ✅ Welcome! Check console.log.
+        </BAlert>
+        <BAlert v-if="errorReg" show variant="danger" class="mt-3">
+          Something went wrong... try again.
         </BAlert>
       </div>
 
       <div class="col-md-6">
         <SignInForm @submitForm="handleLogin" />
-        <BAlert v-if="success" show variant="success" class="mt-3">
+        <BAlert v-if="successLog" show variant="success" class="mt-3">
           ✅ Welcome Back!
+        </BAlert>
+        <BAlert v-if="errorLog" show variant="danger" class="mt-3">
+          Something went wrong... try again.
         </BAlert>
       </div>
     </div>

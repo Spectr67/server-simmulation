@@ -29,6 +29,7 @@ function getAccountByUsername(username) {
   return accounts.find(a => a.username === username)
 }
 function getUsernameBySessionId(sessionId) {
+  const sessions = getSessions()
   return sessions[sessionId]
 }
 function checkAuthData(authData) {
