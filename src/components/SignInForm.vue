@@ -65,18 +65,18 @@ export default {
       <h4 class="mb-3">Login</h4>
 
       <BForm @submit.prevent="submitForm" novalidate>
-        <BFormGroup label="Username" label-for="username">
+        <BFormGroup label="Username" label-for="usernameLog">
           <BFormInput
-            id="username"
+            id="usernameLog"
             v-model.trim="form.username"
             :state="fieldState('username')"
             required
           />
         </BFormGroup>
 
-        <BFormGroup label="Password" label-for="password">
+        <BFormGroup label="Password" label-for="passwordLog">
           <BFormInput
-            id="password"
+            id="passwordLog"
             type="password"
             v-model="form.password"
             :state="fieldState('password')"
