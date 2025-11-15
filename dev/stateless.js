@@ -22,7 +22,7 @@ function createSession(username) {
   return sessionId
 }
 function getAccountByUsername(username) {
-  return accounts.find((a) => a.username === username)
+  return accounts.find(a => a.username === username)
 }
 function getUsernameBySessionId(sessionId) {
   return sessions[sessionId]
@@ -51,25 +51,25 @@ function authenticate(authData) {
   if (isOk) return createSession(authData.username)
   return false
 }
-function authorize(sessionId) {
-  const resource = arguments.callee.caller.name
-  if (resource === 'showHome') return true
-  if (resource === 'showPanel') {
+function authorize(sessionId, resource) {
+  if (resource === 'page-home') return 'HELLO GUEST!!!'
+  if (resource === 'page-panel') {
     const username = getUsernameBySessionId(sessionId)
     if (username) {
       const account = getAccountByUsername(username)
-      return account.drink
+      return { username: account.username, drink: account.drink }
     }
-    return false
   }
-  if (resource === 'showManage') {
+  if (resource === 'page-manage') {
     const username = getUsernameBySessionId(sessionId)
     if (username) {
       const account = getAccountByUsername(username)
-      return Object.fromEntries(accounts.map((a) => [a.username, a.drink]))
+      if (account.role === 'moderator') {
+        return Object.fromEntries(accounts.map(a => [a.username, a.drink]))
+      }
     }
-    return false
   }
+  return false
 }
 
 //====================================================
@@ -79,22 +79,28 @@ function authorize(sessionId) {
  */
 // оптравляет запрос на сервер
 let sessionId
+let username
+let drink
 function signUp(regData) {
   const isSuccess = register(regData)
-  if (isSuccess) console.log('регистрация удалась')
-  else console.log('фейл регистрации')
+  if (isSuccess) return true
+  else false
+  // if (isSuccess) console.log('регистрация удалась', regData.username)
+  // else console.log('фейл регистрации')
 }
 function signIn(authData) {
   sessionId = authenticate(authData)
-  if (sessionId) console.log('вход успешен:', authData.username)
-  else console.log('фейл входа')
+  if (sessionId) return true
+  else false
+  // if (sessionId) console.log('вход успешен:', authData.username)
+  // else console.log('фейл входа')
 }
 
 //
 
 // всем, в том числе гостям (без регистрации)
 function showHome() {
-  const data = authorize(sessionId)
+  const data = authorize(sessionId, 'page-home')
   if (data) {
     return 'Приветствуем в приложении "Напитки"'
   } else {
@@ -103,8 +109,10 @@ function showHome() {
 }
 // всем зарегеным юзерам
 function showPanel() {
-  const data = authorize(sessionId)
+  const data = authorize(sessionId, 'page-panel')
   if (data) {
+    username = data.username
+    drink = data.drink
     return `Ваш напиток: ${data}`
   } else {
     return 'ERR! авторизация провалена (нехватает прав)'
@@ -112,7 +120,7 @@ function showPanel() {
 }
 // только модераторам
 function showManage() {
-  const data = authorize(sessionId)
+  const data = authorize(sessionId, 'page-manage')
   if (data) {
     return data
     return `Управление напитками пользователей ${data}`
@@ -129,15 +137,19 @@ function showManage() {
 let resp
 
 signUp({ username: 'Petya', password: 'qwe', re: 'qwe', drink: 'cola' })
+signUp({ username: 'Vasya', password: 'qwr', re: 'qwr', drink: 'cola' })
 signUp({ username: 'Killer', password: 'qwe1', re: 'qwe1', drink: 'pepsi' })
-signIn({ username: 'Petya', password: 'qwe' })
-setRoleToAccount('Killer', 'moderator')
+signIn({ username: 'Killer', password: 'qwe1' })
+setRoleToAccount('Petya', 'moderator')
 
 resp = showHome()
 resp
 resp = showPanel()
-resp
+username
+drink
 resp = showManage()
 console.log(resp)
 
 console.log(accounts)
+
+export { signUp }

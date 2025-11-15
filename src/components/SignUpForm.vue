@@ -9,6 +9,9 @@ import {
   BAlert,
 } from 'bootstrap-vue-next'
 
+// client code (api) для взаимодействия с сервером
+import { signUp } from '../../dev/stateless.js'
+
 export default {
   components: {
     BContainer,
@@ -22,7 +25,7 @@ export default {
   emits: ['submitForm'],
   data() {
     return {
-      form: {
+      regData: {
         username: '',
         password: '',
         repassword: '',
@@ -33,28 +36,42 @@ export default {
   },
   methods: {
     fieldState(field) {
-      const value = this.form[field]
+      const value = this.regData[field]
       if (value === '' || value === null) return null
-      if (field === 'repassword' && value !== this.form.password) return false
+      if (field === 'repassword' && value !== this.regData.password) {
+        return false
+      }
       return true
     },
     submitForm() {
+      if (signUp(this.regData)) {
+        this.status = 'ok-signup'
+      } else {
+        this.status = 'err-signup'
+      }
+      setTimeout(() => {
+        this.status = 'none'
+      }, 3000)
+
       this.submitted = false
 
       if (
-        !this.form.username ||
-        !this.form.password ||
-        !this.form.repassword ||
-        !this.form.favoriteDrink
+        !this.regData.username ||
+        !this.regData.password ||
+        !this.regData.repassword ||
+        !this.regData.favoriteDrink
       ) {
         return
       }
-      const accountDto = {
-        username: this.form.username,
-        password: this.form.password,
-        repassword: this.form.repassword,
-        favoriteDrink: this.form.favoriteDrink,
-      }
+
+      const accountDto = { ...this.regData }
+
+      // const accountDto = {
+      //   username: this.regData.username,
+      //   password: this.regData.password,
+      //   repassword: this.regData.repassword,
+      //   favoriteDrink: this.regData.favoriteDrink,
+      // }
 
       // console.log('Registration data:', accountDto)
 
@@ -63,10 +80,10 @@ export default {
       this.submitted = true
 
       setTimeout(() => {
-        this.form.username = ''
-        this.form.password = ''
-        this.form.repassword = ''
-        this.form.favoriteDrink = ''
+        this.regData.username = ''
+        this.regData.password = ''
+        this.regData.repassword = ''
+        this.regData.favoriteDrink = ''
       }, 30)
     },
   },
@@ -82,7 +99,7 @@ export default {
         <BFormGroup label="Login" label-for="login">
           <BFormInput
             id="login"
-            v-model.trim="form.username"
+            v-model.trim="regData.username"
             :state="fieldState('username')"
             placeholder=""
             required
@@ -93,7 +110,7 @@ export default {
           <BFormInput
             id="password"
             type="password"
-            v-model="form.password"
+            v-model="regData.password"
             :state="fieldState('password')"
             placeholder=""
             required
@@ -104,7 +121,7 @@ export default {
           <BFormInput
             id="repassword"
             type="password"
-            v-model="form.repassword"
+            v-model="regData.repassword"
             :state="fieldState('repassword')"
             placeholder=""
             required
@@ -114,7 +131,7 @@ export default {
         <BFormGroup label="Favorite Drink" label-for="favoriteDrink">
           <BFormInput
             id="favoriteDrink"
-            v-model="form.favoriteDrink"
+            v-model="regData.favoriteDrink"
             :state="fieldState('favoriteDrink')"
             placeholder="Example: Tea"
             required

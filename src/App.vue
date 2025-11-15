@@ -2,8 +2,8 @@
 import { BAlert } from 'bootstrap-vue-next'
 import SignInForm from './components/SignInForm.vue'
 import SignUpForm from './components/SignUpForm.vue'
-import { getAccounts, setAccounts } from './localStorage/localStorage'
-import { register, authenticate, authorize } from './server/server'
+import { getAccounts, setAccounts } from '../src-sv/server/localStorage'
+import { register, authenticate, authorize } from '../src-sv/server/server'
 import GuestWindow from './components/GuestWindow.vue'
 import UserWindow from './components/UserWindow.vue'
 import ModeratorWindow from './components/ModeratorWindow.vue'
@@ -25,6 +25,14 @@ export default {
       errorReg: false,
       successLog: false,
       errorLog: false,
+      availableStatuses: [
+        'ok-signup',
+        'err-signup',
+        'ok-signin',
+        'err-signin',
+        'none',
+      ],
+      status: 'none',
       sessionId: '',
       role: 'guest',
       currentAccount: null,

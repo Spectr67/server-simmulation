@@ -3,7 +3,7 @@ import {
   setAccounts,
   getSessions,
   setSessions,
-} from '@/localStorage/localStorage'
+} from './localStorage'
 
 function createSession(username) {
   const sessions = getSessions()
