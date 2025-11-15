@@ -1,9 +1,23 @@
 <script>
-import { BCard } from 'bootstrap-vue-next'
+import { BButton, BCard } from 'bootstrap-vue-next'
 
 export default {
   props: ['accounts', 'account'],
-  components: { BCard },
+  components: { BCard, BButton },
+  emits: ['changeRole'],
+  data() {
+    return {
+      newRoles: {},
+      roles: ['user', 'moderator', 'admin'],
+    }
+  },
+  methods: {
+    applyRole(acc) {
+      console.log({ AccUsername: acc.username, role: newRole })
+      const newRole = this.newRoles[acc.username]
+      this.$emit('changeRole', { AccUsername: acc.username, role: newRole })
+    },
+  },
 }
 </script>
 
@@ -15,7 +29,17 @@ export default {
       <BCard>
         <h5>{{ acc.username }}</h5>
         <p>Drink: {{ acc.drink }}</p>
-        <p>Role: {{ acc.role }}</p>
+
+        <p><strong>Role:</strong> {{ acc.role }}</p>
+
+        <select v-model="newRoles[acc.username]" class="form-select">
+          <option disabled value="">Select role</option>
+          <option v-for="role in roles" :key="role">
+            {{ role }}
+          </option>
+        </select>
+
+        <BButton class="mt-2" @click="applyRole(acc)"> Apply role </BButton>
       </BCard>
     </div>
   </div>

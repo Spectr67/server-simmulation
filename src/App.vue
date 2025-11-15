@@ -7,6 +7,7 @@ import { register, authenticate, authorize } from './server/server'
 import GuestWindow from './components/GuestWindow.vue'
 import UserWindow from './components/UserWindow.vue'
 import ModeratorWindow from './components/ModeratorWindow.vue'
+import AdminPanel from './components/AdminPanel.vue'
 export default {
   components: {
     SignUpForm,
@@ -15,6 +16,7 @@ export default {
     GuestWindow,
     UserWindow,
     ModeratorWindow,
+    AdminPanel,
   },
   data() {
     return {
@@ -51,7 +53,7 @@ export default {
         const account = authorize(this.sessionId)
 
         this.recourseType = account?.role || 'guest'
-        this.currentAccount = account // ⬅ сохраняем тут
+        this.currentAccount = account
 
         console.log('Role:', this.recourseType)
       } else {
@@ -78,6 +80,12 @@ export default {
         setAccounts(this.accounts)
         console.log('Admin has created')
       }
+    },
+    handleChangeRole() {
+      console.log()
+      const acc = getAccountByUsername(AccUsername)
+      const role = role
+      acc.role = role
     },
   },
   mounted() {
@@ -118,6 +126,12 @@ export default {
       v-if="recourseType === 'moderator' || recourseType === 'admin'"
       :account="currentAccount"
       :accounts="this.accounts"
+    />
+    <AdminPanel
+      v-if="recourseType === 'admin'"
+      :account="currentAccount"
+      :accounts="this.accounts"
+      @changeRole="handleChangeRole"
     />
   </div>
 </template>
