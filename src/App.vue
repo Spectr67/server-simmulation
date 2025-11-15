@@ -26,7 +26,7 @@ export default {
       successLog: false,
       errorLog: false,
       sessionId: '',
-      recourseType: 'guest',
+      role: 'guest',
       currentAccount: null,
     }
   },
@@ -52,14 +52,14 @@ export default {
 
         const account = authorize(this.sessionId)
 
-        this.recourseType = account?.role || 'guest'
+        this.role = account?.role || 'guest'
         this.currentAccount = account
 
-        console.log('Role:', this.recourseType)
+        console.log('Role:', this.role)
       } else {
         this.successLog = false
         this.errorLog = true
-        this.recourseType = 'guest'
+        this.role = 'guest'
         this.currentAccount = null
       }
     },
@@ -120,15 +120,15 @@ export default {
     </div>
   </div>
   <div class="container py-5">
-    <GuestWindow v-if="recourseType === 'guest'" />
-    <UserWindow v-if="recourseType === 'user'" :account="currentAccount" />
+    <GuestWindow v-if="role === 'guest'" />
+    <UserWindow v-if="role === 'user'" :account="currentAccount" />
     <ModeratorWindow
-      v-if="recourseType === 'moderator' || recourseType === 'admin'"
+      v-if="role === 'moderator' || role === 'admin'"
       :account="currentAccount"
       :accounts="this.accounts"
     />
     <AdminPanel
-      v-if="recourseType === 'admin'"
+      v-if="role === 'admin'"
       :account="currentAccount"
       :accounts="this.accounts"
       @changeRole="handleChangeRole"
