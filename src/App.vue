@@ -21,8 +21,6 @@ export default {
   data() {
     return {
       accounts: [],
-      successLog: false,
-      errorLog: false,
       availableStatuses: [
         'ok-signup',
         'err-signup',
@@ -37,26 +35,26 @@ export default {
     }
   },
   methods: {
-    handleLogin(authData) {
-      this.sessionId = authenticate(authData)
+    // handleLogin(authData) {
+    //   this.sessionId = authenticate(authData)
 
-      if (this.sessionId) {
-        this.successLog = true
-        this.errorLog = false
+    //   if (this.sessionId) {
+    //     this.successLog = true
+    //     this.errorLog = false
 
-        const account = authorize(this.sessionId)
+    //     const account = authorize(this.sessionId)
 
-        this.role = account?.role || 'guest'
-        this.currentAccount = account
+    //     this.role = account?.role || 'guest'
+    //     this.currentAccount = account
 
-        console.log('Role:', this.role)
-      } else {
-        this.successLog = false
-        this.errorLog = true
-        this.role = 'guest'
-        this.currentAccount = null
-      }
-    },
+    //     console.log('Role:', this.role)
+    //   } else {
+    //     this.successLog = false
+    //     this.errorLog = true
+    //     this.role = 'guest'
+    //     this.currentAccount = null
+    //   }
+    // },
 
     loadAccounts() {
       this.accounts = getAccounts()
@@ -97,13 +95,7 @@ export default {
       </div>
 
       <div class="col-md-6">
-        <SignInForm @submitForm="handleLogin" />
-        <BAlert v-if="successLog" show variant="success" class="mt-3">
-          ✅ Welcome Back!
-        </BAlert>
-        <BAlert v-if="errorLog" show variant="danger" class="mt-3">
-          Something went wrong... try again.
-        </BAlert>
+        <SignInForm />
       </div>
     </div>
   </div>

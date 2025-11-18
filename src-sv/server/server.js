@@ -13,11 +13,13 @@ export function signUp(regData) {
   // else console.log('фейл регистрации')
 }
 export function signIn(authData) {
-  sessionId = authenticate(authData)
-  if (sessionId) return true
-  else false
-  // if (sessionId) console.log('вход успешен:', authData.username)
-  // else console.log('фейл входа')
+  const sessionId = authenticate(authData)
+
+  if (sessionId) {
+    return true
+  } else {
+    return false
+  }
 }
 
 ///////////
