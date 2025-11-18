@@ -21,8 +21,6 @@ export default {
   data() {
     return {
       accounts: [],
-      successReg: false,
-      errorReg: false,
       successLog: false,
       errorLog: false,
       availableStatuses: [
@@ -39,18 +37,6 @@ export default {
     }
   },
   methods: {
-    handleRegister(accountDto) {
-      const success = register(accountDto)
-      if (success) {
-        this.accounts = getAccounts()
-        this.successReg = true
-        this.errorReg = false
-      } else {
-        this.successReg = false
-        this.errorReg = true
-      }
-    },
-
     handleLogin(authData) {
       this.sessionId = authenticate(authData)
 
@@ -107,13 +93,7 @@ export default {
   <div class="container py-5">
     <div class="row g-4">
       <div class="col-md-6">
-        <SignUpForm @submitForm="handleRegister" />
-        <BAlert v-if="successReg" show variant="success" class="mt-3">
-          ✅ Welcome! Check console.log.
-        </BAlert>
-        <BAlert v-if="errorReg" show variant="danger" class="mt-3">
-          Something went wrong... try again.
-        </BAlert>
+        <SignUpForm />
       </div>
 
       <div class="col-md-6">

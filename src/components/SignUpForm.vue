@@ -9,9 +9,7 @@ import {
   BAlert,
 } from 'bootstrap-vue-next'
 
-// client code (api) для взаимодействия с сервером
-import { signUp } from '../../dev/stateless.js'
-
+import { signUp } from '@/client/client-api'
 export default {
   components: {
     BContainer,
@@ -31,29 +29,24 @@ export default {
         repassword: '',
         favoriteDrink: '',
       },
+
       submitted: false,
+      successReg: false,
+      errorReg: false,
     }
   },
   methods: {
     fieldState(field) {
       const value = this.regData[field]
-      if (value === '' || value === null) return null
-      if (field === 'repassword' && value !== this.regData.password) {
+      if (!value) return null
+      if (field === 'repassword' && value !== this.regData.password)
         return false
-      }
       return true
     },
-    submitForm() {
-      if (signUp(this.regData)) {
-        this.status = 'ok-signup'
-      } else {
-        this.status = 'err-signup'
-      }
-      setTimeout(() => {
-        this.status = 'none'
-      }, 3000)
 
-      this.submitted = false
+    submitForm() {
+      this.successReg = false
+      this.errorReg = false
 
       if (
         !this.regData.username ||
@@ -61,23 +54,20 @@ export default {
         !this.regData.repassword ||
         !this.regData.favoriteDrink
       ) {
+        this.errorReg = true
         return
       }
 
-      const accountDto = { ...this.regData }
+      if (signUp(this.regData)) {
+        this.successReg = true
+      } else {
+        this.errorReg = true
+      }
 
-      // const accountDto = {
-      //   username: this.regData.username,
-      //   password: this.regData.password,
-      //   repassword: this.regData.repassword,
-      //   favoriteDrink: this.regData.favoriteDrink,
-      // }
-
-      // console.log('Registration data:', accountDto)
-
-      this.$emit('submitForm', accountDto)
-
-      this.submitted = true
+      setTimeout(() => {
+        this.successReg = false
+        this.errorReg = false
+      }, 3000)
 
       setTimeout(() => {
         this.regData.username = ''
@@ -101,7 +91,6 @@ export default {
             id="login"
             v-model.trim="regData.username"
             :state="fieldState('username')"
-            placeholder=""
             required
           />
         </BFormGroup>
@@ -112,7 +101,6 @@ export default {
             type="password"
             v-model="regData.password"
             :state="fieldState('password')"
-            placeholder=""
             required
           />
         </BFormGroup>
@@ -123,7 +111,6 @@ export default {
             type="password"
             v-model="regData.repassword"
             :state="fieldState('repassword')"
-            placeholder=""
             required
           />
         </BFormGroup>
@@ -143,6 +130,14 @@ export default {
           <small class="text-muted">All inputs required</small>
         </div>
       </BForm>
+
+      <BAlert v-if="successReg" show variant="success" class="mt-3">
+        ✅ Welcome to the club!.
+      </BAlert>
+
+      <BAlert v-if="errorReg" show variant="danger" class="mt-3">
+        ❌ Something went wrong... try again.
+      </BAlert>
     </BCard>
   </BContainer>
 </template>

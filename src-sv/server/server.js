@@ -5,6 +5,22 @@ import {
   setSessions,
 } from './localStorage'
 
+export function signUp(regData) {
+  const isSuccess = register(regData)
+  if (isSuccess) return true
+  else false
+  // if (isSuccess) console.log('регистрация удалась', regData.username)
+  // else console.log('фейл регистрации')
+}
+export function signIn(authData) {
+  sessionId = authenticate(authData)
+  if (sessionId) return true
+  else false
+  // if (sessionId) console.log('вход успешен:', authData.username)
+  // else console.log('фейл входа')
+}
+
+///////////
 function createSession(username) {
   const sessions = getSessions()
   const sessionId = randId()
