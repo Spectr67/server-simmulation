@@ -1,4 +1,5 @@
 <script>
+import { signUp } from '../../dev/stateless.js'
 import {
   BContainer,
   BCard,
@@ -9,7 +10,6 @@ import {
   BAlert,
 } from 'bootstrap-vue-next'
 
-import { signUp } from '@/client/client-api'
 export default {
   components: {
     BContainer,
@@ -20,61 +20,46 @@ export default {
     BButton,
     BAlert,
   },
-  emits: ['submitForm'],
+
   data() {
     return {
-      regData: {
-        username: '',
-        password: '',
-        repassword: '',
-        favoriteDrink: '',
-      },
-
-      submitted: false,
-      successReg: false,
-      errorReg: false,
+      regData: this.initRegData(),
+      error: null,
+      isSubmitted: false,
     }
   },
+
   methods: {
-    fieldState(field) {
-      const value = this.regData[field]
-      if (!value) return null
-      if (field === 'repassword' && value !== this.regData.password)
-        return false
-      return true
+    initRegData() {
+      return {
+        username: '',
+        password: '',
+        re: '',
+        drink: '',
+      }
     },
 
     submitForm() {
-      this.successReg = false
-      this.errorReg = false
-
+      if (this.regData.password !== this.regData.re) return
       if (
-        !this.regData.username ||
-        !this.regData.password ||
-        !this.regData.repassword ||
-        !this.regData.favoriteDrink
+        this.regData.username &&
+        this.regData.password &&
+        this.regData.drink
       ) {
-        this.errorReg = true
-        return
+        if (signUp(this.regData)) {
+        } else {
+          this.error = { message: 'reg fail' }
+        }
+
+        this.isSubmitted = true
+        this.regData = this.initRegData()
+
+        // проблема с повторным таймером
+        setTimeout(() => {
+          this.isSubmitted = false
+          this.error = null
+        }, 9000)
       }
-
-      if (signUp(this.regData)) {
-        this.successReg = true
-      } else {
-        this.errorReg = true
-      }
-
-      setTimeout(() => {
-        this.successReg = false
-        this.errorReg = false
-      }, 3000)
-
-      setTimeout(() => {
-        this.regData.username = ''
-        this.regData.password = ''
-        this.regData.repassword = ''
-        this.regData.favoriteDrink = ''
-      }, 30)
     },
   },
 }
@@ -90,7 +75,7 @@ export default {
           <BFormInput
             id="login"
             v-model.trim="regData.username"
-            :state="fieldState('username')"
+            :state="regData.username.length >= 3"
             required
           />
         </BFormGroup>
@@ -100,7 +85,9 @@ export default {
             id="password"
             type="password"
             v-model="regData.password"
-            :state="fieldState('password')"
+            :state="
+              regData.password.length >= 1 && regData.password === regData.re
+            "
             required
           />
         </BFormGroup>
@@ -109,8 +96,8 @@ export default {
           <BFormInput
             id="repassword"
             type="password"
-            v-model="regData.repassword"
-            :state="fieldState('repassword')"
+            v-model="regData.re"
+            :state="regData.re.length >= 1 && regData.password === regData.re"
             required
           />
         </BFormGroup>
@@ -118,8 +105,8 @@ export default {
         <BFormGroup label="Favorite Drink" label-for="favoriteDrink">
           <BFormInput
             id="favoriteDrink"
-            v-model="regData.favoriteDrink"
-            :state="fieldState('favoriteDrink')"
+            v-model="regData.drink"
+            :state="regData.drink.length >= 3"
             placeholder="Example: Tea"
             required
           />
@@ -131,13 +118,16 @@ export default {
         </div>
       </BForm>
 
-      <BAlert v-if="successReg" show variant="success" class="mt-3">
-        ✅ Welcome to the club!.
-      </BAlert>
+      <div v-if="isSubmitted">
+        <BAlert v-if="error" show variant="danger" class="mt-3">
+          ❌ Something went wrong... try again.
+          {{ error.message }}
+        </BAlert>
 
-      <BAlert v-if="errorReg" show variant="danger" class="mt-3">
-        ❌ Something went wrong... try again.
-      </BAlert>
+        <BAlert v-else show variant="success" class="mt-3">
+          ✅ Welcome to the club!.
+        </BAlert>
+      </div>
     </BCard>
   </BContainer>
 </template>

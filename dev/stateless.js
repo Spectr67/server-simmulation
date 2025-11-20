@@ -44,6 +44,7 @@ function register(regData) {
   if (getAccountByUsername(regData.username)) return false
   const account = createAccount(regData)
   accounts.push(account)
+  console.log('>>', account)
   return true
 }
 function authenticate(authData) {
@@ -82,14 +83,17 @@ let sessionId
 let username
 let drink
 function signUp(regData) {
-  const isSuccess = register(regData)
+  console.log(regData)
+  const isSuccess = register({ ...regData })
+
+  console.log('>>>', isSuccess)
   if (isSuccess) return true
   else false
   // if (isSuccess) console.log('регистрация удалась', regData.username)
   // else console.log('фейл регистрации')
 }
 function signIn(authData) {
-  sessionId = authenticate(authData)
+  sessionId = authenticate({ ...authData })
   if (sessionId) return true
   else false
   // if (sessionId) console.log('вход успешен:', authData.username)
@@ -142,14 +146,14 @@ signUp({ username: 'Killer', password: 'qwe1', re: 'qwe1', drink: 'pepsi' })
 signIn({ username: 'Killer', password: 'qwe1' })
 setRoleToAccount('Petya', 'moderator')
 
-resp = showHome()
-resp
-resp = showPanel()
-username
-drink
-resp = showManage()
-console.log(resp)
+// resp = showHome()
+// resp
+// resp = showPanel()
+// username
+// drink
+// resp = showManage()
+// console.log(resp)
 
-console.log(accounts)
+// console.log(accounts)
 
 export { signUp }
