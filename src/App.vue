@@ -1,9 +1,7 @@
 <script>
-import { BAlert } from 'bootstrap-vue-next'
 import SignInForm from './components/SignInForm.vue'
 import SignUpForm from './components/SignUpForm.vue'
 import { getAccounts, setAccounts } from '../src-sv/server/localStorage'
-import { register, authenticate, authorize } from '../src-sv/server/server'
 import GuestWindow from './components/GuestWindow.vue'
 import UserWindow from './components/UserWindow.vue'
 import ModeratorWindow from './components/ModeratorWindow.vue'
@@ -12,7 +10,6 @@ export default {
   components: {
     SignUpForm,
     SignInForm,
-    BAlert,
     GuestWindow,
     UserWindow,
     ModeratorWindow,
@@ -21,41 +18,12 @@ export default {
   data() {
     return {
       accounts: [],
-      availableStatuses: [
-        'ok-signup',
-        'err-signup',
-        'ok-signin',
-        'err-signin',
-        'none',
-      ],
-      status: 'none',
       sessionId: '',
       role: 'guest',
       currentAccount: null,
     }
   },
   methods: {
-    // handleLogin(authData) {
-    //   this.sessionId = authenticate(authData)
-
-    //   if (this.sessionId) {
-    //     this.successLog = true
-    //     this.errorLog = false
-
-    //     const account = authorize(this.sessionId)
-
-    //     this.role = account?.role || 'guest'
-    //     this.currentAccount = account
-
-    //     console.log('Role:', this.role)
-    //   } else {
-    //     this.successLog = false
-    //     this.errorLog = true
-    //     this.role = 'guest'
-    //     this.currentAccount = null
-    //   }
-    // },
-
     loadAccounts() {
       this.accounts = getAccounts()
 
@@ -93,7 +61,6 @@ export default {
       <div class="col-md-6">
         <SignUpForm />
       </div>
-
       <div class="col-md-6">
         <SignInForm />
       </div>
