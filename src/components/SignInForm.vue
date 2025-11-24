@@ -1,4 +1,5 @@
 <script>
+import { signIn } from '../../dev/stateless.js'
 import {
   BContainer,
   BCard,
@@ -8,8 +9,6 @@ import {
   BButton,
   BAlert,
 } from 'bootstrap-vue-next'
-
-import { signIn } from '@/client/client-api'
 
 export default {
   components: {
@@ -21,6 +20,7 @@ export default {
     BButton,
     BAlert,
   },
+
   data() {
     return {
       authData: {
@@ -28,42 +28,32 @@ export default {
         password: '',
       },
 
-      submitted: false,
-      successLog: false,
-      errorLog: false,
+      error: null,
+      isSubmitted: false,
     }
   },
+
   methods: {
-    fieldState(field) {
-      const value = this.authData[field]
-      if (!value) return null
-      return true
+    initAuthData() {
+      return { username: '', password: '' }
     },
 
     submitForm() {
-      this.successLog = false
-      this.errorLog = false
+      const sid = signIn(this.authData)
 
-      if (!this.authData.username || !this.authData.password) {
-        this.errorLog = true
-        return
-      }
-      const ok = signIn(this.authData)
-
-      if (ok) {
-        this.successLog = true
+      if (!sid) {
+        this.error = { message: 'Login failed' }
       } else {
-        this.errorLog = true
+        this.error = null
       }
-      setTimeout(() => {
-        this.successLog = false
-        this.errorLog = false
-      }, 3000)
+
+      this.isSubmitted = true
+      this.authData = this.initAuthData()
 
       setTimeout(() => {
-        this.authData.username = ''
-        this.authData.password = ''
-      }, 300)
+        this.isSubmitted = false
+        this.error = null
+      }, 5000)
     },
   },
 }
@@ -79,7 +69,7 @@ export default {
           <BFormInput
             id="usernameLog"
             v-model.trim="authData.username"
-            :state="fieldState('username')"
+            :state="authData.username.length >= 3"
             required
           />
         </BFormGroup>
@@ -89,7 +79,7 @@ export default {
             id="passwordLog"
             type="password"
             v-model="authData.password"
-            :state="fieldState('password')"
+            :state="authData.password >= 1"
             required
           />
         </BFormGroup>
@@ -99,14 +89,14 @@ export default {
           <small class="text-muted">All inputs required</small>
         </div>
       </BForm>
-
-      <BAlert v-if="successLog" show variant="success" class="mt-3">
-        ✅ Welcome Back!
-      </BAlert>
-
-      <BAlert v-if="errorLog" show variant="danger" class="mt-3">
-        ❌ Something went wrong... try again.
-      </BAlert>
+      <div v-if="isSubmitted">
+        <BAlert v-if="error" show variant="danger" class="mt-3">
+          ❌ Something went wrong... try again.
+        </BAlert>
+        <BAlert v-else show variant="success" class="mt-3">
+          ✅ Welcome Back!
+        </BAlert>
+      </div>
     </BCard>
   </BContainer>
 </template>

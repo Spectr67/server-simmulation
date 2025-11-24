@@ -9,8 +9,8 @@ const randId = () => crypto.randomUUID().split('-')[0]
  * server
  */
 // private: (клиент не вызывает эти функции)
-const accounts = []
-const sessions = {}
+export const accounts = []
+export const sessions = {}
 function createAccount(regData) {
   delete regData.re
   const id = randId()
@@ -140,11 +140,11 @@ function showManage() {
  */
 let resp
 
-signUp({ username: 'Petya', password: 'qwe', re: 'qwe', drink: 'cola' })
-signUp({ username: 'Vasya', password: 'qwr', re: 'qwr', drink: 'cola' })
-signUp({ username: 'Killer', password: 'qwe1', re: 'qwe1', drink: 'pepsi' })
-signIn({ username: 'Killer', password: 'qwe1' })
-setRoleToAccount('Petya', 'moderator')
+// signUp({ username: 'Petya', password: 'qwe', re: 'qwe', drink: 'cola' })
+// signUp({ username: 'Vasya', password: 'qwr', re: 'qwr', drink: 'cola' })
+// signUp({ username: 'Killer', password: 'qwe1', re: 'qwe1', drink: 'pepsi' })
+// signIn({ username: 'Killer', password: 'qwe1' })
+// setRoleToAccount('Petya', 'moderator')
 
 // resp = showHome()
 // resp
@@ -156,4 +156,4 @@ setRoleToAccount('Petya', 'moderator')
 
 // console.log(accounts)
 
-export { signUp }
+export { signUp, signIn }

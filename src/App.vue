@@ -1,7 +1,7 @@
 <script>
 import SignInForm from './components/SignInForm.vue'
 import SignUpForm from './components/SignUpForm.vue'
-import { getAccounts, setAccounts } from '../src-sv/server/localStorage'
+import { accounts, sessions } from '../dev/stateless'
 import GuestWindow from './components/GuestWindow.vue'
 import UserWindow from './components/UserWindow.vue'
 import ModeratorWindow from './components/ModeratorWindow.vue'
@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      accounts: [],
+      accounts: accounts,
       sessionId: '',
       role: 'guest',
       currentAccount: null,
@@ -25,8 +25,6 @@ export default {
   },
   methods: {
     loadAccounts() {
-      this.accounts = getAccounts()
-
       const adminExists = this.accounts.some(acc => acc.username === 'admin')
       if (!adminExists) {
         const admin = {
@@ -37,8 +35,16 @@ export default {
           role: 'admin',
         }
         this.accounts.push(admin)
-        setAccounts(this.accounts)
-        console.log('Admin has created')
+        console.log('Admin has been created')
+        const moder = {
+          id: 'moder-id-1',
+          username: 'moder',
+          password: 'moder',
+          drink: 'Tea',
+          role: 'moder',
+        }
+        this.accounts.push(moder)
+        console.log('Moder has been created')
       }
     },
     handleChangeRole() {
