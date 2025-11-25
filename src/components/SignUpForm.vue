@@ -26,6 +26,13 @@ export default {
       regData: this.initRegData(),
       error: null,
       isSubmitted: false,
+      isFieldDirty: false,
+      pure: {
+        username: true,
+        password: true,
+        re: true,
+        drink: true,
+      },
     }
   },
 
@@ -75,8 +82,9 @@ export default {
           <BFormInput
             id="login"
             v-model.trim="regData.username"
-            :state="regData.username.length >= 3"
+            :state="pure.username || regData.username.length >= 3"
             required
+            @blur="pure.username = false"
           />
         </BFormGroup>
 
@@ -86,7 +94,8 @@ export default {
             type="password"
             v-model="regData.password"
             :state="
-              regData.password.length >= 1 && regData.password === regData.re
+              pure.password ||
+              (regData.password.length >= 1 && regData.password === regData.re)
             "
             required
           />
@@ -97,7 +106,10 @@ export default {
             id="repassword"
             type="password"
             v-model="regData.re"
-            :state="regData.re.length >= 1 && regData.password === regData.re"
+            :state="
+              pure.re ||
+              (regData.re.length >= 1 && regData.password === regData.re)
+            "
             required
           />
         </BFormGroup>
@@ -106,7 +118,7 @@ export default {
           <BFormInput
             id="favoriteDrink"
             v-model="regData.drink"
-            :state="regData.drink.length >= 3"
+            :state="pure.drink || regData.drink.length >= 3"
             placeholder="Example: Tea"
             required
           />
