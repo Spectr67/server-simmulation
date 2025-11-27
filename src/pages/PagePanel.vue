@@ -1,17 +1,8 @@
 <script>
-import ModeratorWindow from '@/components/ModeratorWindow.vue'
-
-export default {
-  components: {
-    ModeratorWindow,
-  },
-}
+export default {}
 </script>
 
 <template>
-  <div>
-    <ModeratorWindow />
-  </div>
   <div>
     <h1>PANEL</h1>
   </div>

@@ -26,7 +26,6 @@ export default {
       regData: this.initRegData(),
       error: null,
       isSubmitted: false,
-      isFieldDirty: false,
       pure: {
         username: true,
         password: true,

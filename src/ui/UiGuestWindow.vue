@@ -1,6 +1,3 @@
-<script>
-export default {}
-</script>
 <template>
   <h1>Welcome to Drinks application!</h1>
   <h2>

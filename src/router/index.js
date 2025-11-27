@@ -1,7 +1,6 @@
-import PageAdminPanel from '@/pages/PageAdminPanel.vue'
 import PageHome from '@/pages/PageHome.vue'
 import PagePanel from '@/pages/PagePanel.vue'
-import PageTemp from '@/pages/PageTemp.vue'
+import PageAdmin from '@/pages/PageAdmin.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
@@ -14,12 +13,8 @@ const routes = [
     component: PagePanel,
   },
   {
-    path: '/temp',
-    component: PageTemp,
-  },
-  {
     path: '/admin',
-    component: PageAdminPanel,
+    component: PageAdmin,
   },
 ]
 

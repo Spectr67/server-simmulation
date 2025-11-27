@@ -1,5 +1,5 @@
 <script>
-import GuestWindow from '@/components/GuestWindow.vue'
+import GuestWindow from '@/ui/UiGuestWindow.vue'
 import SignInForm from '@/components/SignInForm.vue'
 import SignUpForm from '@/components/SignUpForm.vue'
 
@@ -22,8 +22,6 @@ export default {
         <SignInForm />
       </div>
     </div>
-  </div>
-  <div>
     <GuestWindow />
   </div>
 </template>

@@ -9,8 +9,30 @@ const randId = () => crypto.randomUUID().split('-')[0]
  * server
  */
 // private: (клиент не вызывает эти функции)
-export const accounts = []
-export const sessions = {}
+const accounts = [
+  {
+    id: randId(),
+    username: 'admin',
+    password: 'admin',
+    drink: 'Tea',
+    role: 'admin',
+  },
+  {
+    id: randId(),
+    username: 'moder',
+    password: 'moder',
+    drink: 'Tea',
+    role: 'moderator',
+  },
+  {
+    id: randId(),
+    username: 'vasya',
+    password: 'vasya',
+    drink: 'Tea',
+    role: 'user',
+  },
+]
+const sessions = {}
 function createAccount(regData) {
   delete regData.re
   const id = randId()
@@ -82,6 +104,7 @@ function authorize(sessionId, resource) {
 let sessionId
 let username
 let drink
+// эти функции импортируем во vue компонентах
 function signUp(regData) {
   console.log(regData)
   const isSuccess = register({ ...regData })
@@ -99,8 +122,6 @@ function signIn(authData) {
   // if (sessionId) console.log('вход успешен:', authData.username)
   // else console.log('фейл входа')
 }
-
-//
 
 // всем, в том числе гостям (без регистрации)
 function showHome() {
@@ -133,12 +154,14 @@ function showManage() {
   }
 }
 
+export { signUp, signIn }
+
 //====================================================
 
 /**
  * test
  */
-let resp
+// let resp
 
 // signUp({ username: 'Petya', password: 'qwe', re: 'qwe', drink: 'cola' })
 // signUp({ username: 'Vasya', password: 'qwr', re: 'qwr', drink: 'cola' })
@@ -155,5 +178,3 @@ let resp
 // console.log(resp)
 
 // console.log(accounts)
-
-export { signUp, signIn }

@@ -2,15 +2,17 @@
 import { BButton, BCard } from 'bootstrap-vue-next'
 
 export default {
-  props: ['accounts', 'account'],
   components: { BCard, BButton },
-  emits: ['changeRole'],
+
+  props: ['accounts', 'account'],
+
   data() {
     return {
       newRoles: {},
       roles: ['user', 'moderator', 'admin'],
     }
   },
+
   methods: {
     applyRole(acc) {
       console.log({ AccUsername: acc.username, role: newRole })
@@ -22,9 +24,8 @@ export default {
 </script>
 
 <template>
-  <h1>Welcome admin! {{ account.username }}</h1>
-
   <div class="row g-3 mt-3">
+    <h2>Welcome admin! {{ account.username }}</h2>
     <div class="col-md-4" v-for="acc in accounts" :key="acc.id">
       <BCard>
         <h5>{{ acc.username }}</h5>

@@ -23,17 +23,13 @@ export default {
 
   data() {
     return {
-      authData: {
-        username: '',
-        password: '',
-      },
+      authData: this.initAuthData(),
+      error: null,
+      isSubmitted: false,
       pure: {
         username: true,
         password: true,
       },
-
-      error: null,
-      isSubmitted: false,
     }
   },
 
