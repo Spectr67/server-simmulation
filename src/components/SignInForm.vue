@@ -27,6 +27,10 @@ export default {
         username: '',
         password: '',
       },
+      pure: {
+        username: true,
+        password: true,
+      },
 
       error: null,
       isSubmitted: false,
@@ -69,8 +73,9 @@ export default {
           <BFormInput
             id="usernameLog"
             v-model.trim="authData.username"
-            :state="authData.username.length >= 3"
+            :state="authData.username"
             required
+            @blur="pure.username = false"
           />
         </BFormGroup>
 
@@ -79,8 +84,9 @@ export default {
             id="passwordLog"
             type="password"
             v-model="authData.password"
-            :state="authData.password >= 1"
+            :state="authData.password"
             required
+            @blur="pure.username = false"
           />
         </BFormGroup>
 

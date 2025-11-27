@@ -1,16 +1,15 @@
 <script>
-import ModeratorWindow from '@/components/ModeratorWindow.vue'
+import AdminPanel from '@/components/AdminPanel.vue'
 
 export default {
   components: {
-    ModeratorWindow,
+    AdminPanel,
   },
 }
 </script>
-
 <template>
   <div>
-    <ModeratorWindow />
+    <AdminPanel />
   </div>
   <div>
     <h1>PANEL</h1>

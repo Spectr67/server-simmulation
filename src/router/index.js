@@ -1,3 +1,4 @@
+import PageAdminPanel from '@/pages/PageAdminPanel.vue'
 import PageHome from '@/pages/PageHome.vue'
 import PagePanel from '@/pages/PagePanel.vue'
 import PageTemp from '@/pages/PageTemp.vue'
@@ -15,6 +16,10 @@ const routes = [
   {
     path: '/temp',
     component: PageTemp,
+  },
+  {
+    path: '/admin',
+    component: PageAdminPanel,
   },
 ]
 

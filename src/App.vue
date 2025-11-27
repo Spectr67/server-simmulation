@@ -14,6 +14,9 @@ export default {}
       <div>
         <RouterLink to="/temp">TEMP</RouterLink>
       </div>
+      <div>
+        <RouterLink to="/admin">ADMIN</RouterLink>
+      </div>
     </div>
 
     <div class="content">
