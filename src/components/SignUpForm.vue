@@ -124,7 +124,7 @@ export default {
         </BFormGroup>
 
         <div class="d-flex justify-content-between align-items-center mt-3">
-          <BButton type="submit" variant="primary">Register</BButton>
+          <BButton type="submit" variant="success">Register</BButton>
           <small class="text-muted">All inputs required</small>
         </div>
       </BForm>

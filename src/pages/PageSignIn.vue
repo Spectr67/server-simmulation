@@ -1,4 +1,12 @@
 <script>
-export default {}
+import SignInForm from '@/components/SignInForm.vue'
+
+export default {
+  components: {
+    SignInForm,
+  },
+}
 </script>
-<template></template>
+<template>
+  <SignInForm />
+</template>

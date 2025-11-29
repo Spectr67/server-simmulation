@@ -21,7 +21,7 @@ export default {
   <div>
     <div class="navigation">
       <BNavbar class="bg-secondary" variant="dark">
-        <BNavbarBrand tag="h1" class="mb-0 text-success">
+        <BNavbarBrand tag="h1" class="mb-0 text-success" to="/">
           Drinks Application
         </BNavbarBrand>
 
