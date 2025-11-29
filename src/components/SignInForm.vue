@@ -1,5 +1,5 @@
 <script>
-import { signIn } from '../../dev/stateless.js'
+import { signIn } from '../../src-sv/server/stateless.js'
 import {
   BContainer,
   BCard,

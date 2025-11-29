@@ -75,12 +75,30 @@ function authenticate(authData) {
   return false
 }
 function authorize(sessionId, resource) {
-  if (resource === 'page-home') return 'HELLO GUEST!!!'
+  if (resource === 'page-home') return 'your ip is ok'
   if (resource === 'page-panel') {
     const username = getUsernameBySessionId(sessionId)
     if (username) {
       const account = getAccountByUsername(username)
-      return { username: account.username, drink: account.drink }
+      if (account.role === 'moderator') {
+        return accounts.map(a => ({ username: a.username, drink: a.drink }))
+      }
+      if (account.role === 'user') {
+        const data = {
+          payload: accounts.map(a => ({
+            username: a.username,
+            drink: a.drink,
+          })),
+          rules: [
+            'canReadUserUsername',
+            'canReadUserRole',
+            'canReadUserDrink',
+            'canEditUserDrink',
+            'canKickUser',
+            'canBanUser',
+          ],
+        }
+      }
     }
   }
   if (resource === 'page-manage') {
@@ -133,11 +151,9 @@ function showHome() {
 function showPanel() {
   const data = authorize(sessionId, 'page-panel')
   if (data) {
-    username = data.username
-    drink = data.drink
-    return `Ваш напиток: ${data.drink}`
+    return data
   } else {
-    return 'ERR! авторизация провалена (нехватает прав)'
+    return null
   }
 }
 
