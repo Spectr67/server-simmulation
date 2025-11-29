@@ -61,7 +61,8 @@ export default {
       setTimeout(() => {
         this.isSubmitted = false
         this.error = null
-      }, 5000)
+        this.$router.push('/panel')
+      }, 2000)
     },
   },
 }

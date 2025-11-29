@@ -64,7 +64,8 @@ export default {
         setTimeout(() => {
           this.isSubmitted = false
           this.error = null
-        }, 9000)
+          this.$router.push('/signIn')
+        }, 1000)
       }
     },
   },

@@ -154,6 +154,9 @@ function showManage() {
   }
 }
 
+console.log(accounts)
+console.log(sessions)
+
 export { signUp, signIn }
 
 //====================================================
