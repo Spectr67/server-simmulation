@@ -38,6 +38,11 @@ export default {
       return { username: '', password: '' }
     },
 
+    fieldState(value, pure) {
+      if (pure) return null
+      return value ? true : false
+    },
+
     submitForm() {
       const sid = signIn(this.authData)
 
@@ -48,7 +53,10 @@ export default {
       }
 
       this.isSubmitted = true
+
       this.authData = this.initAuthData()
+      this.pure.username = true
+      this.pure.password = true
 
       setTimeout(() => {
         this.isSubmitted = false
@@ -69,7 +77,7 @@ export default {
           <BFormInput
             id="usernameLog"
             v-model.trim="authData.username"
-            :state="authData.username"
+            :state="fieldState(authData.username, pure.username)"
             required
             @blur="pure.username = false"
           />
@@ -80,9 +88,9 @@ export default {
             id="passwordLog"
             type="password"
             v-model="authData.password"
-            :state="authData.password"
+            :state="fieldState(authData.password, pure.password)"
             required
-            @blur="pure.username = false"
+            @blur="pure.password = false"
           />
         </BFormGroup>
 
@@ -91,10 +99,12 @@ export default {
           <small class="text-muted">All inputs required</small>
         </div>
       </BForm>
+
       <div v-if="isSubmitted">
         <BAlert v-if="error" show variant="danger" class="mt-3">
           ❌ Something went wrong... try again.
         </BAlert>
+
         <BAlert v-else show variant="success" class="mt-3">
           ✅ Welcome Back!
         </BAlert>
