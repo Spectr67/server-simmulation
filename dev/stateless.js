@@ -112,15 +112,11 @@ function signUp(regData) {
   console.log('>>>', isSuccess)
   if (isSuccess) return true
   else false
-  // if (isSuccess) console.log('регистрация удалась', regData.username)
-  // else console.log('фейл регистрации')
 }
 function signIn(authData) {
   sessionId = authenticate({ ...authData })
   if (sessionId) return true
   else false
-  // if (sessionId) console.log('вход успешен:', authData.username)
-  // else console.log('фейл входа')
 }
 
 // всем, в том числе гостям (без регистрации)
@@ -132,23 +128,24 @@ function showHome() {
     return 'ERR! авторизация провалена (нехватает прав)'
   }
 }
-// всем зарегеным юзерам
+
+// всем зареганным юзерам
 function showPanel() {
   const data = authorize(sessionId, 'page-panel')
   if (data) {
     username = data.username
     drink = data.drink
-    return `Ваш напиток: ${data}`
+    return `Ваш напиток: ${data.drink}`
   } else {
     return 'ERR! авторизация провалена (нехватает прав)'
   }
 }
+
 // только модераторам
 function showManage() {
   const data = authorize(sessionId, 'page-manage')
   if (data) {
-    return data
-    return `Управление напитками пользователей ${data}`
+    return `Управление напитками пользователей: ${JSON.stringify(data)}`
   } else {
     return 'ERR! авторизация провалена (нехватает прав)'
   }
@@ -157,7 +154,7 @@ function showManage() {
 console.log(accounts)
 console.log(sessions)
 
-export { signUp, signIn }
+export { signUp, signIn, showHome, showPanel, showManage }
 
 //====================================================
 
