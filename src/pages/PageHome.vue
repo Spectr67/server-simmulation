@@ -22,6 +22,8 @@ export default {
         <SignInForm />
       </div>
     </div>
-    <GuestWindow />
+    <div class="mt-5">
+      <GuestWindow />
+    </div>
   </div>
 </template>
