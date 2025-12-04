@@ -1,14 +1,9 @@
-/**
- * shared
- */
 const randId = () => crypto.randomUUID().split('-')[0]
-
 //====================================================
 
 /**
  * server
  */
-// private: (клиент не вызывает эти функции)
 const accounts = [
   {
     id: randId(),
@@ -59,6 +54,7 @@ function checkAuthData(authData) {
 function setRoleToAccount(username, role) {
   getAccountByUsername(username).role = role
 }
+
 function register(regData) {
   if (regData.username === '') return false
   if (regData.password === '') return false
@@ -69,11 +65,13 @@ function register(regData) {
   console.log('>>', account)
   return true
 }
+
 function authenticate(authData) {
   const isOk = checkAuthData(authData)
   if (isOk) return createSession(authData.username)
   return false
 }
+
 function authorize(sessionId, resource) {
   if (resource === 'page-home') return 'your ip is ok'
   if (resource === 'page-panel') {
@@ -138,9 +136,12 @@ function signIn(authData) {
 }
 
 // всем, в том числе гостям (без регистрации)
+
 function showHome() {
   const data = authorize(sessionId, 'page-home')
   if (data) {
+    console.log(data)
+    console.log('data')
     return 'Приветствуем в приложении "Напитки"'
   } else {
     return 'ERR! авторизация провалена (нехватает прав)'
@@ -161,6 +162,8 @@ function showPanel() {
 function showManage() {
   const data = authorize(sessionId, 'page-manage')
   if (data) {
+    console.log(data)
+    console.log('data')
     return `Управление напитками пользователей: ${JSON.stringify(data)}`
   } else {
     return 'ERR! авторизация провалена (нехватает прав)'

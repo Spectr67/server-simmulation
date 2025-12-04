@@ -13,6 +13,7 @@ export default {
 
   mounted() {
     this.usersContext = showPanel()
+    console.log(this.usersContext)
   },
 }
 </script>
