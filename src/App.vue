@@ -6,6 +6,7 @@ import {
   BNavbarNav,
   BNavItem,
 } from 'bootstrap-vue-next'
+import { showProfile } from '../src-sv/server/stateless.js'
 
 export default {
   components: {
@@ -13,6 +14,12 @@ export default {
     BNavbarBrand,
     BNavbarNav,
     BNavItem,
+  },
+
+  data() {
+    return {
+      profile: showProfile(),
+    }
   },
 }
 </script>
@@ -30,6 +37,9 @@ export default {
           <BNavItem to="/panel" class="mx-3" variant="success">PANEL</BNavItem>
           <BNavItem to="/admin" class="mx-3" variant="success">ADMIN</BNavItem>
         </BNavbarNav>
+
+        <BNavItem variant="success">{{ profile.username }}</BNavItem>
+
         <BNavbarNav class="mx-right">
           <BNavItem to="/signUp" class="mx-3" variant="success"
             >Sign Up</BNavItem
