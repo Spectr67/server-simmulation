@@ -54,6 +54,9 @@ function checkAuthData(authData) {
 function setRoleToAccount(username, role) {
   getAccountByUsername(username).role = role
 }
+function setDrinkToAccount(username, drink) {
+  getAccountByUsername(username).role = role
+}
 
 function register(regData) {
   if (regData.username === '') return false
@@ -62,7 +65,6 @@ function register(regData) {
   if (getAccountByUsername(regData.username)) return false
   const account = createAccount(regData)
   accounts.push(account)
-  console.log('>>', account)
   return true
 }
 
@@ -132,14 +134,19 @@ let clientProfile
 function signUp(regData) {
   console.log(regData)
   const isSuccess = register({ ...regData })
-  // fetch('http://domain.com/register', regData)
-
-  console.log('>>>', isSuccess)
   if (isSuccess) return true
   else false
 }
+
+let fn = () => {}
+
+function func(cb) {
+  fn = cb
+}
+
 function signIn(authData) {
   clientSessionId = authenticate({ ...authData })
+  fn()
   if (clientSessionId) return true
   else false
 }
@@ -187,7 +194,7 @@ function showProfile() {
 console.log(accounts)
 console.log(sessions)
 
-export { signUp, signIn, showHome, showPanel, showManage, showProfile }
+export { signUp, signIn, showHome, showPanel, showManage, showProfile, func }
 
 //====================================================
 
@@ -196,8 +203,8 @@ export { signUp, signIn, showHome, showPanel, showManage, showProfile }
  */
 let resp
 
-// signUp({ username: 'Petya', password: 'qwe', re: 'qwe', drink: 'cola' })
-// signIn({ username: 'Petya', password: 'qwe' })
+signUp({ username: 'Petya', password: 'qwe', re: 'qwe', drink: 'cola' })
+signIn({ username: 'Petya', password: 'qwe' })
 // signUp({ username: 'Vasya', password: 'qwr', re: 'qwr', drink: 'cola' })
 // signUp({ username: 'Killer', password: 'qwe1', re: 'qwe1', drink: 'pepsi' })
 // setRoleToAccount('Petya', 'moderator')
@@ -209,6 +216,7 @@ resp
 resp = showProfile()
 resp
 
+clientSessionId
 clientProfile
 
 // resp = showManage()
