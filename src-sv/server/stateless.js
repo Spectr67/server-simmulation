@@ -179,6 +179,8 @@ function showManage() {
 
 function showProfile() {
   clientProfile = authorize(clientSessionId, 'page-profile')
+  console.log(clientProfile)
+  console.log('clientProfile')
   return clientProfile
 }
 
@@ -194,8 +196,8 @@ export { signUp, signIn, showHome, showPanel, showManage, showProfile }
  */
 let resp
 
-signUp({ username: 'Petya', password: 'qwe', re: 'qwe', drink: 'cola' })
-signIn({ username: 'Petya', password: 'qwe' })
+// signUp({ username: 'Petya', password: 'qwe', re: 'qwe', drink: 'cola' })
+// signIn({ username: 'Petya', password: 'qwe' })
 // signUp({ username: 'Vasya', password: 'qwr', re: 'qwr', drink: 'cola' })
 // signUp({ username: 'Killer', password: 'qwe1', re: 'qwe1', drink: 'pepsi' })
 // setRoleToAccount('Petya', 'moderator')
