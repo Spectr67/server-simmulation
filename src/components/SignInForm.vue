@@ -59,10 +59,12 @@ export default {
       this.pure.password = true
 
       setTimeout(() => {
-        this.isSubmitted = false
         this.error = null
-        this.$router.push('/panel')
       }, 2000)
+    },
+    goSignIn() {
+      this.isSubmitted = false
+      this.$router.push('/panel')
     },
   },
 }
@@ -98,6 +100,13 @@ export default {
         <div class="d-flex justify-content-between align-items-center mt-3">
           <BButton type="submit" variant="success">Login</BButton>
           <small class="text-muted">All inputs required</small>
+          <BButton
+            v-if="isSubmitted && !error"
+            variant="success"
+            @click="goSignIn"
+          >
+            Keep going
+          </BButton>
         </div>
       </BForm>
 

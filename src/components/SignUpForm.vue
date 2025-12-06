@@ -44,6 +44,10 @@ export default {
         drink: '',
       }
     },
+    goSignIn() {
+      this.isSubmitted = false
+      this.$router.push('/signIn')
+    },
 
     submitForm() {
       if (this.regData.password !== this.regData.re) return
@@ -62,9 +66,7 @@ export default {
 
         // проблема с повторным таймером
         setTimeout(() => {
-          this.isSubmitted = false
           this.error = null
-          this.$router.push('/signIn')
         }, 1000)
       }
     },
@@ -127,6 +129,13 @@ export default {
         <div class="d-flex justify-content-between align-items-center mt-3">
           <BButton type="submit" variant="success">Register</BButton>
           <small class="text-muted">All inputs required</small>
+          <BButton
+            v-if="isSubmitted && !error"
+            variant="success"
+            @click="goSignIn"
+          >
+            Keep going
+          </BButton>
         </div>
       </BForm>
 
