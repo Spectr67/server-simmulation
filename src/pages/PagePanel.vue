@@ -10,7 +10,6 @@ export default {
 
 <template>
   <div>
-    <h1>PANEL</h1>
     <PanelWindow />
   </div>
 </template>

@@ -1,9 +1,9 @@
 <script>
-import { BButton, BCard } from 'bootstrap-vue-next'
-import { showManage } from '../../src-sv/server/stateless'
+import { BCard } from 'bootstrap-vue-next'
+import { showPanel } from '../../src-sv/server/stateless.js'
 
 export default {
-  components: { BCard, BButton },
+  components: { BCard },
 
   data() {
     return {
@@ -12,18 +12,40 @@ export default {
   },
 
   mounted() {
-    this.usersContext = showManage()
-    console.log(this.usersContext)
+    this.usersContext = showPanel()
   },
 }
 </script>
 
 <template>
   <div class="row g-3 mt-3">
-    <div v-if="!usersContext" class="col-12">
-      <h1>ERR! hello</h1>
+    <div>{{ usersContext }}</div>
+    <div v-if="Array.isArray(usersContext)" class="row g-3 mt-2">
+      <div
+        v-for="u in usersContext"
+        :key="u.username"
+        class="col-12 col-md-6 col-lg-4"
+      >
+        <BCard>
+          <p><strong>Username:</strong> {{ u.username }}</p>
+          <p><strong>Drink:</strong> {{ u.drink }}</p>
+        </BCard>
+      </div>
     </div>
 
-    {{ usersContext }}
+    <div v-else-if="usersContext && usersContext.payload" class="row g-3 mt-2">
+      <div
+        v-for="u in usersContext.payload"
+        :key="u.username"
+        class="col-12 col-md-6 col-lg-4"
+      >
+        <BCard>
+          <p><strong>Username:</strong> {{ u.username }}</p>
+          <p><strong>Drink:</strong> {{ u.drink }}</p>
+        </BCard>
+      </div>
+    </div>
+
+    <div v-else>Loading or error...</div>
   </div>
 </template>

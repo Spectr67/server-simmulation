@@ -19,25 +19,34 @@ export default {
 
 <template>
   <div class="row g-3 mt-3">
-    <div v-if="!usersContext" class="col-12">
-      <h1>ERR! авторизация провалена (нехватает прав)</h1>
-    </div>
+    <h1>PANEL</h1>
 
-    {{ usersContext }}
-
-    <!-- <div v-else class="col-12">
-      <h1>Welcome {{ account.username }}</h1>
-      <h2>Your favorite drink is {{ account.drink }}</h2>
-    </div> -->
-
-    <!-- <tempalte v-if="account">
-      <div class="col-md-4" v-for="acc in accounts" :key="acc.id">
-        <BCard class="p-3">
-          <h5>{{ acc.username }}</h5>
-          <p>Drink: {{ acc.drink }}</p>
-          <p>Role: {{ acc.role }}</p>
+    <div v-if="Array.isArray(usersContext)" class="row g-3 mt-2">
+      <div
+        v-for="u in usersContext"
+        :key="u.username"
+        class="col-12 col-md-6 col-lg-4"
+      >
+        <BCard>
+          <p><strong>Username:</strong> {{ u.username }}</p>
+          <p><strong>Drink:</strong> {{ u.drink }}</p>
         </BCard>
       </div>
-    </tempalte> -->
+    </div>
+
+    <div v-else-if="usersContext && usersContext.payload" class="row g-3 mt-2">
+      <div
+        v-for="u in usersContext.payload"
+        :key="u.username"
+        class="col-12 col-md-6 col-lg-4"
+      >
+        <BCard>
+          <p><strong>Username:</strong> {{ u.username }}</p>
+          <p><strong>Drink:</strong> {{ u.drink }}</p>
+        </BCard>
+      </div>
+    </div>
+
+    <div v-else>Loading or error...</div>
   </div>
 </template>

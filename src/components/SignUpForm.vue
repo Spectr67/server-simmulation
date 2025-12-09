@@ -84,7 +84,7 @@ export default {
           <BFormInput
             id="login"
             v-model.trim="regData.username"
-            :state="pure.username || regData.username.length >= 3"
+            :state="pure.username || regData.username.length >= 1"
             required
             @blur="pure.username = false"
           />

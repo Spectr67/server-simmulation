@@ -132,7 +132,6 @@ let clientSessionId
 let clientProfile
 // эти функции импортируем во vue компонентах
 function signUp(regData) {
-  console.log(regData)
   const isSuccess = register({ ...regData })
   if (isSuccess) return true
   else false
@@ -176,8 +175,6 @@ function showPanel() {
 function showManage() {
   const data = authorize(clientSessionId, 'page-manage')
   if (data) {
-    console.log(data)
-    console.log('data')
     return `Управление напитками пользователей: ${JSON.stringify(data)}`
   } else {
     return 'ERR! авторизация провалена (нехватает прав)'
@@ -191,8 +188,10 @@ function showProfile() {
   return clientProfile
 }
 
-console.log(accounts)
+// console.log(accounts)
+// console.log('accounts')
 console.log(sessions)
+console.log('sessions!!!!!!!!')
 
 export { signUp, signIn, showHome, showPanel, showManage, showProfile, func }
 
@@ -204,9 +203,9 @@ export { signUp, signIn, showHome, showPanel, showManage, showProfile, func }
 let resp
 
 signUp({ username: 'Petya', password: 'qwe', re: 'qwe', drink: 'cola' })
-signIn({ username: 'Petya', password: 'qwe' })
-// signUp({ username: 'Vasya', password: 'qwr', re: 'qwr', drink: 'cola' })
-// signUp({ username: 'Killer', password: 'qwe1', re: 'qwe1', drink: 'pepsi' })
+// signIn({ username: 'Petya', password: 'qwe' })
+signUp({ username: 'Vasya', password: 'qwr', re: 'qwr', drink: 'cola' })
+signUp({ username: 'Killer', password: 'qwe1', re: 'qwe1', drink: 'pepsi' })
 // setRoleToAccount('Petya', 'moderator')
 
 resp = showHome()
