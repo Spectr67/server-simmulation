@@ -35,7 +35,7 @@ export default {
 
   methods: {
     initAuthData() {
-      return { username: '', password: '' }
+      return { username: 'vasya', password: 'vasya' }
     },
 
     fieldState(value, pure) {

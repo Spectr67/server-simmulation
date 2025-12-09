@@ -28,6 +28,18 @@ const accounts = [
   },
 ]
 const sessions = {}
+
+// const sessions = [
+//   {
+//     id: 1,
+//     sessionId: 'fffff-ffffff-ffffff-ffffff-ffffffffff',
+//     email: 'foo@bar.com',
+//     ip: '111.111.111.111',
+//     createdAt: '1.12.2025/20:20',
+//     updatedAt: '2.12.2025/10:10',
+//   },
+// ]
+
 function createAccount(regData) {
   delete regData.re
   const id = randId()
@@ -51,11 +63,16 @@ function checkAuthData(authData) {
 }
 
 // public: (функции для клиента. пользуйтесь наздоровье)
-function setRoleToAccount(username, role) {
+function setRoleToAccount(sessionId, role) {
+  const username = getUsernameBySessionId(sessionId)
   getAccountByUsername(username).role = role
 }
-function setDrinkToAccount(username, drink) {
-  getAccountByUsername(username).role = role
+function setDrinkToAccount(sessionId, drink) {
+  const username = getUsernameBySessionId(sessionId)
+  const oldDrink = getAccountByUsername(username).drink
+  getAccountByUsername(username).drink = drink
+
+  console.log('drink changed from:', oldDrink, 'to:', drink)
 }
 
 function register(regData) {
@@ -74,7 +91,7 @@ function authenticate(authData) {
   return false
 }
 
-function authorize(sessionId, resource) {
+function authorize(sessionId, resource, method, data) {
   if (resource === 'page-profile') {
     const username = getUsernameBySessionId(sessionId)
     if (username) {
@@ -86,6 +103,10 @@ function authorize(sessionId, resource) {
   }
   if (resource === 'page-home') return 'your ip is ok'
   if (resource === 'page-panel') {
+    if (method === 'PATCH') {
+      setDrinkToAccount(sessionId, data)
+      return
+    }
     const username = getUsernameBySessionId(sessionId)
     if (username) {
       const account = getAccountByUsername(username)
@@ -171,6 +192,10 @@ function showPanel() {
   }
 }
 
+function patchPanel(drink) {
+  authorize(clientSessionId, 'page-panel', 'PATCH', drink)
+}
+
 // только модераторам
 function showManage() {
   const data = authorize(clientSessionId, 'page-manage')
@@ -193,7 +218,16 @@ function showProfile() {
 console.log(sessions)
 console.log('sessions!!!!!!!!')
 
-export { signUp, signIn, showHome, showPanel, showManage, showProfile, func }
+export {
+  signUp,
+  signIn,
+  showHome,
+  showPanel,
+  showManage,
+  showProfile,
+  func,
+  patchPanel,
+}
 
 //====================================================
 
